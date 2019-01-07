@@ -4,31 +4,56 @@ require("")
 require("./keys.js");
 
 const axios= require("axios");
+const inquirer = require('');
+
+// consts for api keys
 const spotifyKey = keys.spotify;
 const sgKey= keys.seatgeek;
 
 
-if (action === "total") {
-    total();
-}   else if (action === "deposit") {
-    deposit();
-}   else if (action === "withdraw") {
-    withdraw();
-}   else if (action === "lotto") {
-    lotto();
-}
-  
+switch (liri.js, userInput) {
+  case "spotify-this-song":
+    spotifySong();
+    break;
 
-  axios.get("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy").then(
-  function (response) {
-    // Then we print out the imdbRating
-    const { imdbRating, Title, Rated, Year } = response.data;
-    // const Title = response.data.Title
-    // const imdbRating = response.data.imdbRating
-    // const Year = response.data.Year
-    // const Rated = response.data.Rated
-    console.log(`The movie's rating is: ${imdbRating}
-The movie's title is: ${Title}
-The movie's Release Year is ${Year}`);
-  }
-);
+  case "concert-this":
+    seatGeekConcert();
+    break;
+
+  case "movie-this":
+    omdbMovie();
+    break;
+
+  case "do-what-it-says":
+    doThis();
+    break;
+
+  default:
+  console.log("/n" + "Something went horribly wrong... try one of these commands" +
+    "/n" + "spotify-this-song" +
+    "/n" + "concert-this" +
+    "/n" + "movie-this" +
+    "/n" + "do-what-it-says"
+  );
+
+}
+
+// function to spotify song search
+function spotifySong (){
+
+}
+
+// function for seat geek concert search
+function seatGeekConcert (){
+
+}
+
+// function for movie search
+function omdbMovie (){
+
+}
+
+// function for do this
+function doThis (){
+
+}
