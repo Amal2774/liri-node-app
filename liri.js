@@ -2,15 +2,17 @@ require("dotenv").config();
 
 const fs = require("fs")
 const keys = require("./keys.js");
-const axios= require("axios");
+const axios = require("axios");
+const spotify = require("node-spotify-api");
+
 
 // api keys
-const spotify = new spotify(keys.spotify);
-const seatGeek= new seatGeek(keys.seatgeek);
+const spotifyKey = new spotify(keys.spotify);
+const seatGeekKey = new seatGeek(keys.seatgeek);
 
 let [node, file, liriCommands, userInput, ...args] = process.argv;
 
-function userCommands (liriCommands, userInput){
+function userCommands(liriCommands, userInput) {
   switch (liriCommands) {
     case "spotify-this-song":
       spotifySong();
@@ -29,24 +31,24 @@ function userCommands (liriCommands, userInput){
       break;
 
     default:
-    console.log("/n" + "Oops... try one of these commands: " +
-      "/n" + "spotify-this-song" +
-      "/n" + "concert-this" +
-      "/n" + "movie-this" +
-      "/n" + "do-what-it-says"
-    );
+      console.log("/n" + "Oops... try one of these commands: " +
+        "/n" + "spotify-this-song" +
+        "/n" + "concert-this" +
+        "/n" + "movie-this" +
+        "/n" + "do-what-it-says"
+      );
 
   };
 };
 
 // function to spotify song search
-function spotifySong(songName){
-  spotify.search({ type: 'track', query: 'songName', limit: 10 }, function(err, data) {
+function spotifySong(songName) {
+  spotify.search({ type: 'track', query: 'songName', limit: 10 }, function (err, data) {
     if (err) {
-      return console.log('Error occurred: ' + err);
-    }
-   
-  console.log(data); 
+      return console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
+    };
+
+    console.log(data);
   });
 };
 
@@ -54,28 +56,48 @@ spotifySong();
 console.log(spotifySong);
 
 // function for seat geek concert search
-function seatGeekConcert (){
+function seatGeekConcert(artist) {
 
-}
+  const clientid = ""
+  const clientsecret = ""
+
+  var queryUrl = "https://api.seatgeek.com/2/events?performers.slug=" + artist + "?client_id=" + clientid + "&client_secret=" + clientsecret;
+
+  axios.get(queryUrl)
+    .then((result) => {
+      const { title, datetime_local, venue } = result.data;
+      console.log(`${title}`);
+      console.log(`${datetime_local}`);
+      console.log(`${venue}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
 
 // function for movie search
-function omdbMovie (movieName){
+function omdbMovie(movieName) {
 
   // const movieName = 
   var queryUrl = "http://www.omdbapi.com/?t=" + movieName || "Mr. Nobody" + "&y=&plot=short&apikey=trilogy";
 
   axios.get(queryUrl)
-  .then((result) => {
-      const { Title, Year, imdbRating } = result.data;
+    .then((result) => {
+      const { Title, Year, imdbRating, tomatoRating, Country, Language, Actors, Plot} = result.data;
       console.log(`${Title} was released in ${Year}.`);
-      console.log(`The IMDB Rating for this movie is ${imdbRating}.`);
-  })
-  .catch((err) => {
+      console.log(`The IMDB rating for this movie is ${imdbRating}.`);
+      console.log(`The Rotten Tomatoes rating for this movie is ${tomatoRating}.`);
+      console.log(`This film was produced in: ${Country}`);
+      console.log(`This film is available in: ${Language}`);
+      console.log(`The actors in this filme are: ${Actors}`);
+      console.log(`Short plot description: ${Plot}`);
+    })
+    .catch((err) => {
       console.log(err);
-  })
+    })
 };
 
 // function for do this
-function doThis (){
+function doThis() {
 
 }
