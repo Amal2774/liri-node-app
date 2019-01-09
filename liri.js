@@ -43,7 +43,7 @@ function userCommands(liriCommands, userInput) {
 
 // function to spotify song search
 function spotifySong(songName) {
-  spotify.search({ type: 'track', query: 'songName', limit: 10 }, function (err, data) {
+  spotify.search({ type: 'track', query: 'songName || The Sign', limit: 10 }, function (err, data) {
     if (err) {
       return console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
     };
@@ -71,19 +71,19 @@ function seatGeekConcert(artist) {
       console.log(`${venue}`);
     })
     .catch((err) => {
-      console.log(err);
+      console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
     })
 };
 
 // function for movie search
 function omdbMovie(movieName) {
-
+ 
   // const movieName = 
   var queryUrl = "http://www.omdbapi.com/?t=" + movieName || "Mr. Nobody" + "&y=&plot=short&apikey=trilogy";
 
   axios.get(queryUrl)
     .then((result) => {
-      const { Title, Year, imdbRating, tomatoRating, Country, Language, Actors, Plot} = result.data;
+      const { Title, Year, imdbRating, tomatoRating, Country, Language, Actors, Plot } = result.data;
       console.log(`${Title} was released in ${Year}.`);
       console.log(`The IMDB rating for this movie is ${imdbRating}.`);
       console.log(`The Rotten Tomatoes rating for this movie is ${tomatoRating}.`);
@@ -93,11 +93,26 @@ function omdbMovie(movieName) {
       console.log(`Short plot description: ${Plot}`);
     })
     .catch((err) => {
-      console.log(err);
+      console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
     })
 };
 
 // function for do this
 function doThis() {
 
-}
+  fs.readFile("random.txt", "utf8", function (error, data) {
+
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
+    }
+
+    // We will then print the contents of data
+    console.log(data);
+
+    // Then split it by commas (to make it more readable)
+    const command = data.split(",");
+
+  });
+
+};
