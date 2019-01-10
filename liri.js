@@ -8,22 +8,22 @@ const spotify = require("node-spotify-api");
 
 // api keys
 const spotifyKey = new spotify(keys.spotify);
-const seatGeekKey = new seatGeek(keys.seatgeek);
 
-let [node, file, liriCommands, userInput, ...args] = process.argv;
-
+let [node, file, liriCommands, ...userInput] = process.argv;
+let userInputStr = userInput.join(' ')
+userCommands(liriCommands, userInputStr)
 function userCommands(liriCommands, userInput) {
   switch (liriCommands) {
     case "spotify-this-song":
-      spotifySong();
+      spotifySong(userInput);
       break;
 
     case "concert-this":
-      seatGeekConcert();
+      seatGeekConcert(userInput);
       break;
 
     case "movie-this":
-      omdbMovie();
+      omdbMovie(userInput);
       break;
 
     case "do-what-it-says":
@@ -43,43 +43,43 @@ function userCommands(liriCommands, userInput) {
 
 // function to spotify song search
 function spotifySong(songName) {
-  spotify.search({ type: 'track', query: 'songName || The Sign', limit: 10 }, function (err, data) {
+  spotifyKey.search({ type: 'track', query: songName, limit: 10 }, function (err, data) {
     if (err) {
       return console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
     };
 
-    console.log(data);
+    console.log(data.tracks.items[0].name);
   });
 };
 
-spotifySong();
-console.log(spotifySong);
 
 // function for seat geek concert search
 function seatGeekConcert(artist) {
 
-  const clientid = ""
-  const clientsecret = ""
+  const clientid = keys.seatgeek.id;
+  const clientsecret = keys.seatgeek.secret;
 
-  var queryUrl = "https://api.seatgeek.com/2/events?performers.slug=" + artist + "?client_id=" + clientid + "&client_secret=" + clientsecret;
+  var queryUrl = "https://api.seatgeek.com/2/events?performers.slug=" + artist.split(' ').join('-') + "&client_id=" + clientid + "&client_secret=" + clientsecret;
 
   axios.get(queryUrl)
     .then((result) => {
-      const { title, datetime_local, venue } = result.data;
+      const { title, datetime_local, venue } = result.data.events[0];
       console.log(`${title}`);
       console.log(`${datetime_local}`);
-      console.log(`${venue}`);
+      console.log(`${venue.name}`);
     })
     .catch((err) => {
-      console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
+      console.log(err);
     })
 };
 
 // function for movie search
 function omdbMovie(movieName) {
- 
+ if(!movieName) {
+   movieName = "Mr. Nobody"
+ }
   // const movieName = 
-  var queryUrl = "http://www.omdbapi.com/?t=" + movieName || "Mr. Nobody" + "&y=&plot=short&apikey=trilogy";
+  var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
   axios.get(queryUrl)
     .then((result) => {
