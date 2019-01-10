@@ -43,12 +43,17 @@ function userCommands(liriCommands, userInput) {
 
 // function to spotify song search
 function spotifySong(songName) {
+  if(!songName) {
+    songName = "I Saw the Sign"
+  }
+
   spotifyKey.search({ type: 'track', query: songName, limit: 10 }, function (err, data) {
     if (err) {
       return console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
     };
+    console.log("Artist: " + data.tracks.items[0].artists[0].name + "\nSong name: " + data.tracks.items[0].name +
+    "\nAlbum Name: " + data.tracks.items[0].album.name + "\nPreview Link: " + data.tracks.items[0].preview_url);
 
-    console.log(data.tracks.items[0].name);
   });
 };
 
@@ -67,6 +72,7 @@ function seatGeekConcert(artist) {
       console.log(`${title}`);
       console.log(`${datetime_local}`);
       console.log(`${venue.name}`);
+      console.log(`${venue.city + ", " + venue.state}`);
     })
     .catch((err) => {
       console.log(err);
