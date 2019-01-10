@@ -9,16 +9,16 @@ liri-node-app is a command line node app that takes in parameters and returns da
 
 Technologies used: 
 
-Node.js
-JavaScript
-Spotify API (via spotify npm module)
-SeatGeek API
+* `Node.js`
+* `JavaScript`
+* `Spotify API (via spotify npm module)`
+* `SeatGeek API`
 
 To Get Started
 
-Clone down repo.
-Run command 'npm install' in Terminal or GitBash
-Run command 'node liri.js' or one of the commands below.
+`Clone down repo.`
+`Run command 'npm install' in Terminal or GitBash`
+`Run command 'node liri.js' or one of the commands below.`
 
 
 
