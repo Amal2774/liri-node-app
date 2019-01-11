@@ -104,20 +104,25 @@ function omdbMovie(movieName) {
 };
 
 // function for do this
-function doThis() {
+function doThis(input) {
 
   fs.readFile("random.txt", "utf8", function (error, data) {
 
     // If the code experiences any errors it will log the error to the console.
     if (error) {
-      return console.log('An error occurred, try one of these commands: spotify-this-song; concert-this; movie-this; do-what-it-says');
+      return console.log(err);
     }
 
     // We will then print the contents of data
     console.log(data);
 
-    // Then split it by commas (to make it more readable)
-    const command = data.split(",");
+    // Then split it by commas (to make it more readable
+    let splits = data.split(",");
+
+    let liriCommands = splits[0];
+    console.log(liriCommands);
+    let songName = splits[1];
+    console.log(songName);
 
   });
 
